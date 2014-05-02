@@ -7,6 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ADB500801913BB1000F550D5 /* GameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB5007E1913BB1000F550D5 /* GameViewController.m */; };
+		ADB500811913BB1000F550D5 /* GameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ADB5007F1913BB1000F550D5 /* GameViewController.xib */; };
+		ADB500831913BB2000F550D5 /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADB500821913BB2000F550D5 /* SpriteKit.framework */; };
+		ADB500871913BB4B00F550D5 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB500861913BB4B00F550D5 /* GameScene.m */; };
+		ADB5008D1913C09F00F550D5 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB5008C1913C09F00F550D5 /* bg.png */; };
+		ADB5008F1913C75A00F550D5 /* sfx_die.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADB5008E1913C75A00F550D5 /* sfx_die.caf */; };
+		ADB500911913C76800F550D5 /* sfx_hit.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADB500901913C76800F550D5 /* sfx_hit.caf */; };
+		ADB500931913C77B00F550D5 /* sfx_wing.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADB500921913C77B00F550D5 /* sfx_wing.caf */; };
+		ADB5009B1913C91B00F550D5 /* bird1.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500981913C91B00F550D5 /* bird1.png */; };
+		ADB5009C1913C91B00F550D5 /* bird2.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500991913C91B00F550D5 /* bird2.png */; };
+		ADB5009D1913C91B00F550D5 /* bird3.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB5009A1913C91B00F550D5 /* bird3.png */; };
+		ADB5009F1913D7F900F550D5 /* floor.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB5009E1913D7F900F550D5 /* floor.png */; };
+		ADB500A11913E60900F550D5 /* sfx_point.caf in Resources */ = {isa = PBXBuildFile; fileRef = ADB500A01913E60900F550D5 /* sfx_point.caf */; };
+		ADB500A41913E8DF00F550D5 /* bottom_pipe.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500A21913E8DF00F550D5 /* bottom_pipe.png */; };
+		ADB500A51913E8DF00F550D5 /* top_pipe.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500A31913E8DF00F550D5 /* top_pipe.png */; };
+		ADB500AA1913EDE100F550D5 /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB500A91913EDE100F550D5 /* MenuScene.m */; };
+		ADB500AC1913F7DB00F550D5 /* button_start.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500AB1913F7DB00F550D5 /* button_start.png */; };
+		ADB500AE1913F91A00F550D5 /* title.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500AD1913F91A00F550D5 /* title.png */; };
+		ADB500B31913FBAF00F550D5 /* ButtonNode.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB500B21913FBAF00F550D5 /* ButtonNode.m */; };
+		ADB500B8191402A300F550D5 /* bird_0.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500B5191402A300F550D5 /* bird_0.png */; };
+		ADB500B9191402A300F550D5 /* bird_1.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500B6191402A300F550D5 /* bird_1.png */; };
+		ADB500BA191402A300F550D5 /* bird_2.png in Resources */ = {isa = PBXBuildFile; fileRef = ADB500B7191402A300F550D5 /* bird_2.png */; };
 		ADDC90C119104DCD00BF7B85 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDC90C019104DCD00BF7B85 /* Foundation.framework */; };
 		ADDC90C319104DCD00BF7B85 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDC90C219104DCD00BF7B85 /* CoreGraphics.framework */; };
 		ADDC90C519104DCD00BF7B85 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADDC90C419104DCD00BF7B85 /* UIKit.framework */; };
@@ -32,6 +54,32 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		ADB5007D1913BB1000F550D5 /* GameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameViewController.h; sourceTree = "<group>"; };
+		ADB5007E1913BB1000F550D5 /* GameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameViewController.m; sourceTree = "<group>"; };
+		ADB5007F1913BB1000F550D5 /* GameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GameViewController.xib; sourceTree = "<group>"; };
+		ADB500821913BB2000F550D5 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
+		ADB500851913BB4B00F550D5 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		ADB500861913BB4B00F550D5 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
+		ADB5008C1913C09F00F550D5 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
+		ADB5008E1913C75A00F550D5 /* sfx_die.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sfx_die.caf; sourceTree = "<group>"; };
+		ADB500901913C76800F550D5 /* sfx_hit.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sfx_hit.caf; sourceTree = "<group>"; };
+		ADB500921913C77B00F550D5 /* sfx_wing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sfx_wing.caf; sourceTree = "<group>"; };
+		ADB500981913C91B00F550D5 /* bird1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird1.png; sourceTree = "<group>"; };
+		ADB500991913C91B00F550D5 /* bird2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird2.png; sourceTree = "<group>"; };
+		ADB5009A1913C91B00F550D5 /* bird3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird3.png; sourceTree = "<group>"; };
+		ADB5009E1913D7F900F550D5 /* floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = floor.png; sourceTree = "<group>"; };
+		ADB500A01913E60900F550D5 /* sfx_point.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sfx_point.caf; sourceTree = "<group>"; };
+		ADB500A21913E8DF00F550D5 /* bottom_pipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bottom_pipe.png; sourceTree = "<group>"; };
+		ADB500A31913E8DF00F550D5 /* top_pipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_pipe.png; sourceTree = "<group>"; };
+		ADB500A81913EDE100F550D5 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
+		ADB500A91913EDE100F550D5 /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
+		ADB500AB1913F7DB00F550D5 /* button_start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_start.png; sourceTree = "<group>"; };
+		ADB500AD1913F91A00F550D5 /* title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = title.png; sourceTree = "<group>"; };
+		ADB500B11913FBAF00F550D5 /* ButtonNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ButtonNode.h; sourceTree = "<group>"; };
+		ADB500B21913FBAF00F550D5 /* ButtonNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ButtonNode.m; sourceTree = "<group>"; };
+		ADB500B5191402A300F550D5 /* bird_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird_0.png; sourceTree = "<group>"; };
+		ADB500B6191402A300F550D5 /* bird_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird_1.png; sourceTree = "<group>"; };
+		ADB500B7191402A300F550D5 /* bird_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird_2.png; sourceTree = "<group>"; };
 		ADDC90BD19104DCD00BF7B85 /* SpriteKitFlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteKitFlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ADDC90C019104DCD00BF7B85 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		ADDC90C219104DCD00BF7B85 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -55,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADB500831913BB2000F550D5 /* SpriteKit.framework in Frameworks */,
 				ADDC90C319104DCD00BF7B85 /* CoreGraphics.framework in Frameworks */,
 				ADDC90C519104DCD00BF7B85 /* UIKit.framework in Frameworks */,
 				ADDC90C119104DCD00BF7B85 /* Foundation.framework in Frameworks */,
@@ -74,6 +123,104 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		ADB5007C1913BAFC00F550D5 /* Game View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				ADB5007D1913BB1000F550D5 /* GameViewController.h */,
+				ADB5007E1913BB1000F550D5 /* GameViewController.m */,
+				ADB5007F1913BB1000F550D5 /* GameViewController.xib */,
+			);
+			name = "Game View Controller";
+			sourceTree = "<group>";
+		};
+		ADB500841913BB3900F550D5 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500B41913FBB600F550D5 /* Nodes */,
+				ADB500A71913EDC200F550D5 /* Menu Scene */,
+				ADB500A61913EDBD00F550D5 /* Game Scene */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
+		ADB500961913C80A00F550D5 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				ADB5008E1913C75A00F550D5 /* sfx_die.caf */,
+				ADB500901913C76800F550D5 /* sfx_hit.caf */,
+				ADB500921913C77B00F550D5 /* sfx_wing.caf */,
+				ADB500A01913E60900F550D5 /* sfx_point.caf */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		ADB500971913C90D00F550D5 /* Textures */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500B5191402A300F550D5 /* bird_0.png */,
+				ADB500B6191402A300F550D5 /* bird_1.png */,
+				ADB500B7191402A300F550D5 /* bird_2.png */,
+				ADB500AD1913F91A00F550D5 /* title.png */,
+				ADB500AB1913F7DB00F550D5 /* button_start.png */,
+				ADB500A21913E8DF00F550D5 /* bottom_pipe.png */,
+				ADB500A31913E8DF00F550D5 /* top_pipe.png */,
+				ADB5008C1913C09F00F550D5 /* bg.png */,
+				ADB5009E1913D7F900F550D5 /* floor.png */,
+				ADB500981913C91B00F550D5 /* bird1.png */,
+				ADB500991913C91B00F550D5 /* bird2.png */,
+				ADB5009A1913C91B00F550D5 /* bird3.png */,
+			);
+			name = Textures;
+			sourceTree = "<group>";
+		};
+		ADB500A61913EDBD00F550D5 /* Game Scene */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500851913BB4B00F550D5 /* GameScene.h */,
+				ADB500861913BB4B00F550D5 /* GameScene.m */,
+			);
+			name = "Game Scene";
+			sourceTree = "<group>";
+		};
+		ADB500A71913EDC200F550D5 /* Menu Scene */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500A81913EDE100F550D5 /* MenuScene.h */,
+				ADB500A91913EDE100F550D5 /* MenuScene.m */,
+			);
+			name = "Menu Scene";
+			sourceTree = "<group>";
+		};
+		ADB500AF1913FA9C00F550D5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500841913BB3900F550D5 /* Game */,
+				ADB5007C1913BAFC00F550D5 /* Game View Controller */,
+				ADDC90CF19104DCD00BF7B85 /* AppDelegate.h */,
+				ADDC90D019104DCD00BF7B85 /* AppDelegate.m */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		ADB500B01913FAA400F550D5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500971913C90D00F550D5 /* Textures */,
+				ADB500961913C80A00F550D5 /* Sounds */,
+				ADDC90D219104DCD00BF7B85 /* Images.xcassets */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		ADB500B41913FBB600F550D5 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				ADB500B11913FBAF00F550D5 /* ButtonNode.h */,
+				ADB500B21913FBAF00F550D5 /* ButtonNode.m */,
+			);
+			name = Nodes;
+			sourceTree = "<group>";
+		};
 		ADDC90B419104DCD00BF7B85 = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +243,7 @@
 		ADDC90BF19104DCD00BF7B85 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ADB500821913BB2000F550D5 /* SpriteKit.framework */,
 				ADDC90C019104DCD00BF7B85 /* Foundation.framework */,
 				ADDC90C219104DCD00BF7B85 /* CoreGraphics.framework */,
 				ADDC90C419104DCD00BF7B85 /* UIKit.framework */,
@@ -107,9 +255,8 @@
 		ADDC90C619104DCD00BF7B85 /* SpriteKitFlappyBird */ = {
 			isa = PBXGroup;
 			children = (
-				ADDC90CF19104DCD00BF7B85 /* AppDelegate.h */,
-				ADDC90D019104DCD00BF7B85 /* AppDelegate.m */,
-				ADDC90D219104DCD00BF7B85 /* Images.xcassets */,
+				ADB500AF1913FA9C00F550D5 /* Sources */,
+				ADB500B01913FAA400F550D5 /* Resources */,
 				ADDC90C719104DCD00BF7B85 /* Supporting Files */,
 			);
 			path = SpriteKitFlappyBird;
@@ -219,8 +366,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADB500911913C76800F550D5 /* sfx_hit.caf in Resources */,
+				ADB500A11913E60900F550D5 /* sfx_point.caf in Resources */,
+				ADB500AC1913F7DB00F550D5 /* button_start.png in Resources */,
+				ADB500931913C77B00F550D5 /* sfx_wing.caf in Resources */,
 				ADDC90CB19104DCD00BF7B85 /* InfoPlist.strings in Resources */,
+				ADB500A41913E8DF00F550D5 /* bottom_pipe.png in Resources */,
+				ADB500B9191402A300F550D5 /* bird_1.png in Resources */,
+				ADB5008D1913C09F00F550D5 /* bg.png in Resources */,
+				ADB500AE1913F91A00F550D5 /* title.png in Resources */,
+				ADB5009B1913C91B00F550D5 /* bird1.png in Resources */,
 				ADDC90D319104DCD00BF7B85 /* Images.xcassets in Resources */,
+				ADB5009F1913D7F900F550D5 /* floor.png in Resources */,
+				ADB500B8191402A300F550D5 /* bird_0.png in Resources */,
+				ADB5008F1913C75A00F550D5 /* sfx_die.caf in Resources */,
+				ADB5009D1913C91B00F550D5 /* bird3.png in Resources */,
+				ADB500811913BB1000F550D5 /* GameViewController.xib in Resources */,
+				ADB500BA191402A300F550D5 /* bird_2.png in Resources */,
+				ADB5009C1913C91B00F550D5 /* bird2.png in Resources */,
+				ADB500A51913E8DF00F550D5 /* top_pipe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,6 +404,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADDC90D119104DCD00BF7B85 /* AppDelegate.m in Sources */,
+				ADB500AA1913EDE100F550D5 /* MenuScene.m in Sources */,
+				ADB500801913BB1000F550D5 /* GameViewController.m in Sources */,
+				ADB500B31913FBAF00F550D5 /* ButtonNode.m in Sources */,
+				ADB500871913BB4B00F550D5 /* GameScene.m in Sources */,
 				ADDC90CD19104DCD00BF7B85 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -437,6 +605,7 @@
 				ADDC90EB19104DCE00BF7B85 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ADDC90EC19104DCE00BF7B85 /* Build configuration list for PBXNativeTarget "SpriteKitFlappyBirdTests" */ = {
 			isa = XCConfigurationList;
@@ -445,6 +614,7 @@
 				ADDC90EE19104DCE00BF7B85 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

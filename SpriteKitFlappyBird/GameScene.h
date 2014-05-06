@@ -10,4 +10,6 @@
 
 @interface GameScene : SKScene
 
+@property (copy, nonatomic) void (^didPressOk)();
+
 @end

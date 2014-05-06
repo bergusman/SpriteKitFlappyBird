@@ -48,7 +48,11 @@
 
 - (void)showMenuWithTransition:(BOOL)usesTransition {
     if (usesTransition) {
-        [self.spriteView presentScene:self.menuScene transition:[SKTransition fadeWithDuration:0.3]];
+        SKTransition *transition = [SKTransition fadeWithColor:[UIColor blackColor] duration:1];
+        transition.pausesIncomingScene = NO;
+        transition.pausesOutgoingScene = NO;
+        
+        [self.spriteView presentScene:self.menuScene transition:transition];
     } else {
         [self.spriteView presentScene:self.menuScene];
     }
@@ -56,7 +60,28 @@
 
 - (void)showGame {
     GameScene *gameScene = [[GameScene alloc] initWithSize:CGSizeMake(288, 512)];
-    [self.spriteView presentScene:gameScene transition:[SKTransition fadeWithColor:[UIColor blackColor] duration:1]];
+    
+    SKTransition *transition = [SKTransition fadeWithColor:[UIColor blackColor] duration:1];
+    transition.pausesIncomingScene = NO;
+    transition.pausesOutgoingScene = NO;
+    
+    [self.spriteView presentScene:gameScene transition:transition];
+    
+    gameScene.didPressOk = ^() {
+        [self showMenuWithTransition:YES];
+    };
+    
+    self.gameScene = gameScene;
+}
+
+- (void)willResignActive:(NSNotification *)notification {
+    self.menuScene.paused = YES;
+    self.gameScene.paused = YES;
+}
+
+- (void)didBecomeActive:(NSNotification *)notification {
+    self.menuScene.paused = NO;
+    self.gameScene.paused = NO;
 }
 
 #pragma mark - UIViewController
@@ -69,6 +94,10 @@
     [self setupMenuScene];
     
     [self showMenuWithTransition:NO];
+    //[self showGame];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (BOOL)prefersStatusBarHidden {

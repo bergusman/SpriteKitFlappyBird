@@ -8,7 +8,30 @@
 
 #import "GameScene.h"
 
+#import "ButtonNode.h"
+
+#define FLOOR_SPEED_MULTIPLIER 2
+
+typedef NS_ENUM(NSInteger, GameState) {
+    GameStateReady,
+    GameStateGame,
+    GameStateGameOver
+};
+
+typedef NS_OPTIONS(NSInteger, GameNodeGategory) {
+    BirdCategory = 1 << 0,
+    PointPipeCategory = 1 << 1,
+    PipeCategory = 1 << 2,
+    FloorCategory = 1 << 3
+};
+
+// 288 x 512
 @interface GameScene () <SKPhysicsContactDelegate>
+
+@property (assign, nonatomic) GameState state;
+
+@property (strong, nonatomic) SKNode *readyNode;
+@property (strong, nonatomic) SKNode *tutorialNode;
 
 @property (strong, nonatomic) SKNode *birdNode;
 
@@ -18,29 +41,318 @@
 
 @property (assign, nonatomic) BOOL up;
 
+@property (strong, nonatomic) SKAction *pipesMoveAction;
+
+@property (assign, nonatomic) NSInteger points;
+
+@property (strong, nonatomic) SKEmitterNode *floorNode;
+
+@property (strong, nonatomic) NSMutableArray *pipes;
+
+@property (assign, nonatomic) BOOL startDown;
+
+@property (assign, nonatomic) BOOL loaded;
+
 @end
 
 @implementation GameScene
 
+#pragma mark - Setups
+
 - (void)setupBackground {
-    SKTexture *bg = [SKTexture textureWithImage:[UIImage imageNamed:@"bg"]];
+    SKSpriteNode *backgroundNode = [[SKSpriteNode alloc] initWithImageNamed:@"bg"];
+    backgroundNode.size = self.size;
+    backgroundNode.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame));
+    [self addChild:backgroundNode];
+}
+
+- (void)setupFloor {
+    SKTexture *floorTexture = [SKTexture textureWithImageNamed:@"floor"];
     
-    SKSpriteNode *spriteNode = [[SKSpriteNode alloc] init];
-    spriteNode.texture = bg;
-    spriteNode.position = CGPointMake(self.size.width / 2, self.size.height / 2);
-    spriteNode.size = self.size;
-    spriteNode.name = @"background";
-    [self addChild:spriteNode];
+    SKEmitterNode *floorNode = [[SKEmitterNode alloc] init];
+    floorNode.position = CGPointMake(self.size.width + floorTexture.size.width / 2, floorTexture.size.height / 2);
+    
+    floorNode.particleTexture = floorTexture;
+    floorNode.particleBirthRate = 1.0 / FLOOR_SPEED_MULTIPLIER;
+    floorNode.particleSpeed = floorTexture.size.width / FLOOR_SPEED_MULTIPLIER;
+    floorNode.particleLifetime = 10;
+    floorNode.emissionAngle = M_PI;
+    [floorNode advanceSimulationTime:10];
+    
+    floorNode.zPosition = 100;
+    
+    [self addChild:floorNode];
+    
+    self.floorNode = floorNode;
+    
+    //////////
+    
+    SKNode *node = [SKNode node];
+    node.position = CGPointMake(self.size.width / 2, 112 / 2);
+    
+    node.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(288, 112)];
+    node.physicsBody.dynamic = NO;
+    node.physicsBody.categoryBitMask = FloorCategory;
+    node.physicsBody.collisionBitMask = 0;
+    
+    [self addChild:node];
 }
 
 - (void)setupBird {
+    SKNode *birdNode = [SKNode node];
+    birdNode.name = @"bird";
+    birdNode.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(36, 26)];
     
-
+    SKSpriteNode *birdSpriteNode = [SKSpriteNode node];
+    birdSpriteNode.name = @"bird_sprite";
+    birdSpriteNode.size = CGSizeMake(48, 48);
     
+    NSArray *birdTextures = @[
+                              [SKTexture textureWithImageNamed:@"bird_0"],
+                              [SKTexture textureWithImageNamed:@"bird_1"],
+                              [SKTexture textureWithImageNamed:@"bird_2"],
+                              [SKTexture textureWithImageNamed:@"bird_1"],
+                              ];
+    
+    SKAction *birdAnimationAction = [SKAction animateWithTextures:birdTextures timePerFrame:0.1];
+    [birdSpriteNode runAction:[SKAction repeatActionForever:birdAnimationAction] withKey:@"fly"];
+    
+    [birdNode addChild:birdSpriteNode];
+    
+    birdNode.position = CGPointMake(90, 280);
+    
+    birdNode.physicsBody.affectedByGravity = NO;
+    
+    birdNode.physicsBody.categoryBitMask = BirdCategory;
+    birdNode.physicsBody.collisionBitMask = FloorCategory;
+    birdNode.physicsBody.contactTestBitMask = FloorCategory | PointPipeCategory | PipeCategory;
+    birdNode.physicsBody.allowsRotation = NO;
+    
+    [self addChild:birdNode];
+    
+    self.birdNode = birdNode;
+    
+    self.birdNode.zPosition = 50;
 }
+
+- (void)setupPipesMoveAction {
+    self.pipesMoveAction = [SKAction moveByX:-340 y:0 duration:3];
+}
+
+#pragma mark - Content
+
+- (void)startGetReady {
+    self.tutorialNode = [SKSpriteNode spriteNodeWithImageNamed:@"tutorial"];
+    [self addChild:self.tutorialNode];
+    
+    self.tutorialNode.position = CGPointMake(168, 240);
+    
+    self.readyNode = [SKSpriteNode spriteNodeWithImageNamed:@"text_ready"];
+    self.readyNode.position = CGPointMake(144, 380);
+    [self addChild:self.readyNode];
+  
+    SKAction *moveUpAction = [SKAction moveByX:0 y:4 duration:0.35];
+    moveUpAction.timingMode = SKActionTimingEaseInEaseOut;
+    
+    SKAction *moveDownAction = [SKAction moveByX:0 y:-4 duration:0.35];
+    moveDownAction.timingMode = SKActionTimingEaseInEaseOut;
+    
+    SKAction *movesAction = [SKAction repeatActionForever:[SKAction sequence:@[moveUpAction, moveDownAction]]];
+  
+    [self.birdNode runAction:movesAction withKey:@"moves"];
+}
+
+- (void)hideReady {
+    SKAction *fadeAction = [SKAction fadeOutWithDuration:0.3];
+    [self.tutorialNode runAction:fadeAction];
+    [self.readyNode runAction:fadeAction];
+}
+
+- (void)pushUpBird {
+    [self playWingSound];
+    self.birdNode.physicsBody.velocity = CGVectorMake(0, 0);
+    [self.birdNode.physicsBody applyImpulse:CGVectorMake(0, 10)];
+}
+
+- (void)startPipesTimer {
+    self.pipesTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(didFirePipesTimer:) userInfo:nil repeats:YES];
+}
+
+- (void)stopPipesTimer {
+    [self.pipesTimer invalidate];
+    self.pipesTimer = nil;
+}
+
+- (void)didFirePipesTimer:(NSTimer *)timer {
+    [self generatePipes];
+}
+
+- (void)generatePipes {
+    [self generateDownPipe];
+    [self generatePointPipe];
+    [self generateUpPipe];
+}
+
+- (void)generateUpPipe {
+    SKSpriteNode *pipe = [SKSpriteNode spriteNodeWithImageNamed:@"pipe_up"];
+    
+    pipe.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:pipe.size];
+    pipe.physicsBody.dynamic = NO;
+    pipe.physicsBody.categoryBitMask = PipeCategory;
+    pipe.physicsBody.collisionBitMask = 0;
+    
+    pipe.physicsBody.contactTestBitMask = 0;
+    
+    pipe.position = CGPointMake(self.size.width + 20, 40);
+    
+    [self addChild:pipe];
+    
+    [pipe runAction:self.pipesMoveAction];
+    
+    pipe.name = @"pipe";
+}
+
+- (void)generateDownPipe {
+    SKSpriteNode *pipe = [SKSpriteNode spriteNodeWithImageNamed:@"pipe_down"];
+    
+    pipe.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:pipe.size];
+    pipe.physicsBody.dynamic = NO;
+    pipe.physicsBody.categoryBitMask = PipeCategory;
+    pipe.physicsBody.collisionBitMask = 0;
+    pipe.physicsBody.contactTestBitMask = 0;
+    //pipe.physicsBody.contactTestBitMask = BirdCategory;
+    
+    pipe.position = CGPointMake(self.size.width + 20, 400);
+    
+    [self addChild:pipe];
+    
+    [pipe runAction:self.pipesMoveAction];
+    
+    pipe.name = @"pipe";
+}
+
+- (void)generatePointPipe {
+    SKNode *pointPipeNode = [SKNode node];
+    pointPipeNode.physicsBody = [SKPhysicsBody bodyWithRectangleOfSize:CGSizeMake(40, 512)];
+    pointPipeNode.position = CGPointMake(self.size.width + 20, CGRectGetMidY(self.frame));
+    pointPipeNode.physicsBody.dynamic = NO;
+    pointPipeNode.physicsBody.categoryBitMask = PointPipeCategory;
+    pointPipeNode.physicsBody.collisionBitMask = 0;
+    //pointPipeNode.physicsBody.contactTestBitMask = BirdCategory;
+    
+    
+    [self addChild:pointPipeNode];
+    
+    [pointPipeNode runAction:self.pipesMoveAction];
+}
+
+- (void)showHit {
+    NSLog(@"%s", __func__);
+    
+    [self playHitSound];
+    self.floorNode.paused = YES;
+    
+    if (self.birdNode.physicsBody.velocity.dy > 0) {
+        self.birdNode.physicsBody.velocity = CGVectorMake(0, 0);
+    }
+    
+    [self stopPipesTimer];
+    
+    [self enumerateChildNodesWithName:@"pipe" usingBlock:^(SKNode *node, BOOL *stop) {
+        node.paused = YES;
+    }];
+    
+    self.birdNode.physicsBody.restitution = 0.0;
+    
+    SKNode *birdSpriteNode = [self.birdNode childNodeWithName:@"bird_sprite"];
+    [birdSpriteNode removeActionForKey:@"fly"];
+    
+    self.birdNode.physicsBody.contactTestBitMask = 0;
+}
+
+- (void)showGameOver {
+    SKSpriteNode *gameOverNode = [SKSpriteNode spriteNodeWithImageNamed:@"text_game_over"];
+    [self addChild:gameOverNode];
+    
+    gameOverNode.position = CGPointMake(self.size.width / 2, 300);
+    
+    [gameOverNode runAction:[SKAction sequence:@[[SKAction moveByX:0 y:2 duration:0.06],
+                                                 [SKAction moveByX:0 y:-4 duration:0.16]]]];
+    
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        
+        [self showOkButton];
+    });
+}
+
+- (void)showOkButton {
+    SKSpriteNode *startButtonSpriteNode = [SKSpriteNode spriteNodeWithImageNamed:@"button_ok"];
+    startButtonSpriteNode.name = @"button_ok";
+    //startButtonSpriteNode.position = CGPointMake(self.size.width / 2, 140);
+    //[self addChild:startButtonSpriteNode];
+    
+    ButtonNode *buttonNode = [[ButtonNode alloc] init];
+    [buttonNode addChild:startButtonSpriteNode];
+    
+    buttonNode.position = CGPointMake(self.size.width / 2, 140);
+    
+    [self addChild:buttonNode];
+    
+    buttonNode.userInteractionEnabled = YES;
+    
+    buttonNode.action = ^() {
+        self.userInteractionEnabled = NO;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (self.didPressOk) {
+                self.didPressOk();
+            }
+        });
+        
+    };
+}
+
+#pragma mark - SKScene
+
+- (void)didMoveToView:(SKView *)view {
+    if (self.loaded) {
+        return;
+    }
+    
+    self.loaded = YES;
+    
+    [self setupBackground];
+    [self setupFloor];
+    [self setupBird];
+    [self setupPipesMoveAction];
+    
+    self.physicsWorld.gravity = CGVectorMake(0, -3);
+    self.physicsWorld.contactDelegate = self;
+    
+    [self startGetReady];
+}
+
+/////////////////////////
+
 
 - (void)didSimulatePhysics {
     SKSpriteNode *spriteNode = (SKSpriteNode *)[self.birdNode childNodeWithName:@"bird_sprite"];
+    
+    if (self.state == GameStateGameOver) {
+        if (!self.startDown) {
+            self.startDown = YES;
+            
+            [spriteNode removeActionForKey:@"rotation"];
+            
+            
+            SKAction *rotateAction = [SKAction rotateToAngle:-M_PI / 2 duration:1];
+            rotateAction.timingMode = SKActionTimingEaseIn;
+            [spriteNode runAction:rotateAction withKey:@"rotation"];
+        }
+        return;
+    }
     
     if (self.birdNode.physicsBody.velocity.dy > 0) {
         if (!self.up) {
@@ -63,7 +375,7 @@
             
             [spriteNode removeActionForKey:@"rotation"];
             
-            SKAction *rotateAction = [SKAction rotateToAngle:-M_PI / 2 duration:0.6];
+            SKAction *rotateAction = [SKAction rotateToAngle:-M_PI / 2 duration:1];
             
             rotateAction.timingMode = SKActionTimingEaseIn;
             
@@ -75,6 +387,8 @@
         }
     }
 }
+
+/*
 
 - (void)didMoveToView:(SKView *)view {
     [self setupBackground];
@@ -162,8 +476,10 @@
     
     self.pipesTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(didFirePipesTimer:) userInfo:nil repeats:YES];
 }
+ 
+ */
 
-- (void)didFirePipesTimer:(NSTimer *)timer {
+- (void)didFirePipesTimer2:(NSTimer *)timer {
     NSLog(@"%@", timer);
     
     
@@ -221,12 +537,57 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
     
+    if (self.state != GameStateGame && self.state != GameStateReady) {
+        return;
+    }
+    
+    if (self.state == GameStateReady) {
+        self.state = GameStateGame;
+        [self.birdNode removeActionForKey:@"moves"];
+        self.birdNode.physicsBody.affectedByGravity = YES;
+        [self startPipesTimer];
+        [self hideReady];
+    }
+    
+    [self pushUpBird];
+    
+    /*
+    
+    
+     */
+    
+}
+
+- (void)playPointSound {
+    SKAction *pointSoundAction = [SKAction playSoundFileNamed:@"sfx_point.caf" waitForCompletion:YES];
+    [self runAction:pointSoundAction];
+}
+
+- (void)playHitSound {
+    SKAction *hit = [SKAction playSoundFileNamed:@"sfx_hit.caf" waitForCompletion:YES];
+    [self runAction:hit];
+}
+
+- (void)playWingSound {
     SKAction *wing = [SKAction playSoundFileNamed:@"sfx_wing.caf" waitForCompletion:YES];
     [self runAction:wing];
+}
+
+- (void)pause {
     
-    self.birdNode.physicsBody.velocity = CGVectorMake(0, 0);
-    [self.birdNode.physicsBody applyImpulse:CGVectorMake(0, 10)];
+    SKShapeNode *dimNode = [[SKShapeNode alloc] init];
+    dimNode.path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 288, 512)].CGPath;
+    dimNode.fillColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
+    [self addChild:dimNode];
     
+    [self stopPipesTimer];
+    
+    
+    self.birdNode.paused = YES;
+    self.floorNode.paused = YES;
+}
+
+- (void)resume {
     
 }
 
@@ -234,35 +595,41 @@
 
 - (void)didBeginContact:(SKPhysicsContact *)contact {
     NSLog(@"%s", __func__);
-    if (contact.bodyA == self.birdNode.physicsBody || contact.bodyB == self.birdNode.physicsBody) {
-        if (contact.bodyA.categoryBitMask == 4 || contact.bodyB.categoryBitMask == 4) {
-            
-            SKAction *pointSoundAction = [SKAction playSoundFileNamed:@"sfx_point.caf" waitForCompletion:NO];
-            [self runAction:pointSoundAction];
-            
-            if (contact.bodyA.categoryBitMask == 4) {
-                [contact.bodyA.node removeFromParent];
-            }
-            if (contact.bodyB.categoryBitMask == 4) {
-                [contact.bodyB.node removeFromParent];
-            }
-            
-            return;
-        }
-        
-        
-        
-        if (!self.gameOver) {
-            self.gameOver = YES;
-            SKAction *hit = [SKAction playSoundFileNamed:@"sfx_hit.caf" waitForCompletion:YES];
-            [self runAction:hit];
-        }
-        
-    }
-}
-
-- (void)didEndContact:(SKPhysicsContact *)contact {
     
+    NSLog(@"%@ %@", contact.bodyA.node, contact.bodyB.node);
+    
+    if (self.state != GameStateGame) {
+        return;
+    }
+    
+    if (contact.bodyA.categoryBitMask == PointPipeCategory || contact.bodyB.categoryBitMask == PointPipeCategory) {
+        
+        if (contact.bodyA.categoryBitMask == PointPipeCategory) {
+            [contact.bodyA.node removeFromParent];
+        }
+        
+        if (contact.bodyB.categoryBitMask == PointPipeCategory) {
+            [contact.bodyB.node removeFromParent];
+        }
+        
+        [self playPointSound];
+        self.points++;
+        return;
+    }
+    
+    if (contact.bodyA.categoryBitMask == FloorCategory || contact.bodyB.categoryBitMask == FloorCategory) {
+        self.state = GameStateGameOver;
+        [self showHit];
+        [self showGameOver];
+        return;
+    }
+    
+    if (contact.bodyA.categoryBitMask == PipeCategory || contact.bodyB.categoryBitMask == PipeCategory) {
+        self.state = GameStateGameOver;
+        [self showHit];
+        [self showGameOver];
+        return;
+    }
 }
 
 @end

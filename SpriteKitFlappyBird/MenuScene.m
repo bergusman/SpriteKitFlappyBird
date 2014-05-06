@@ -72,7 +72,6 @@
     //startButtonSpriteNode.position = CGPointMake(self.size.width / 2, 140);
     //[self addChild:startButtonSpriteNode];
     
-    
     ButtonNode *buttonNode = [[ButtonNode alloc] init];
     [buttonNode addChild:startButtonSpriteNode];
     
@@ -80,18 +79,17 @@
     
     [self addChild:buttonNode];
     
-    NSLog(@"----------");
-    NSLog(@"%@", NSStringFromCGRect(buttonNode.frame));
-    NSLog(@"%@", NSStringFromCGRect(startButtonSpriteNode.frame));
-    NSLog(@"%@", NSStringFromCGRect([buttonNode calculateAccumulatedFrame]));
-    
-    
     buttonNode.userInteractionEnabled = YES;
     
     buttonNode.action = ^() {
-        if (self.didPressStart) {
-            self.didPressStart();
-        }
+        self.userInteractionEnabled = NO;
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            if (self.didPressStart) {
+                self.didPressStart();
+            }
+        });
+        
     };
 }
 
